@@ -1,33 +1,80 @@
 library("tidyverse")
 library("dplyr")
+library("ggplot2")
 
 dados <- read_csv(file = "Base4.csv")
 
-total = nrow(dados)
-total
+# ANÁLISE UNIVARIADA
 
-qtd_satisfeitos <- length(which(dados["Satisfacao"] == "Satisfeito"))
+# Análise da variável satisfação
 
-qtd_neutros_insatisfeitos <-
-  length(which(dados["Satisfacao"] == "Neutro ou Insatisfeito"))
-
-satisfacao <- data.frame(name = c("Satisfeitos", "Neutros ou Insatisfeitos"),
-                         value = c(qtd_satisfeitos, qtd_neutros_insatisfeitos))
+satisfacao <- table(dados$Satisfacao)
 satisfacao
 
-satisfacao %>%
-  ggplot(aes(x = reorder(name, value), y = value)) +
-  geom_bar(stat = "identity", width = 0.3, color = "blue", fill = rgb(0.1, 0.4, 0.5, 0.7)) + # nolint: line_length_linter.
-  ggtitle("Satisfação dos Clientes") + theme(plot.title = element_text(hjust = 0.5)) + # nolint: line_length_linter.
-  xlab("Grau de Satisfação") + ylab("Quantidade")
+freq_relativa_satisfeitos <- prop.table(satisfacao)
+freq_relativa_satisfeitos
 
-freq_relativa <- data.frame(name = c("Satisfeitos", "Neutros ou Insatisfeitos"),
-                            value = c((qtd_satisfeitos / total), # nolint: line_length_linter.
-                                      (qtd_neutros_insatisfeitos / total))) # nolint: line_length_linter.
-freq_relativa
+# Análise da variável gênero
 
-freq_relativa %>%
-  ggplot(aes(x = reorder(name, value), y = value)) +
-  geom_bar(stat = "identity", width = 0.3, color = "blue", fill = rgb(0.1, 0.4, 0.5, 0.7)) + # nolint: line_length_linter.
-  ggtitle("Satisfação dos Clientes") + theme(plot.title = element_text(hjust = 0.5)) + # nolint: line_length_linter.
-  xlab("Grau de Satisfação") + ylab("Frequência Relativa")
+genero <- table(dados$Genero)
+genero
+
+freq_relativa_genero <- prop.table(genero)
+freq_relativa_genero
+
+# Análise da variável tipo
+
+tipo <- table(dados$Tipo)
+tipo
+
+freq_relativa_tipo <- prop.table(tipo)
+freq_relativa_tipo
+
+# Análise da variável WiFi
+
+wifi <- table(dados$WiFi)
+wifi
+
+freq_relativa_wifi <- prop.table(wifi)
+freq_relativa_wifi
+
+# Análise da variável Comida_Bebida
+
+alimentacao <- table(dados$Comida_Bebida)
+alimentacao
+
+freq_relativa_alimentacao <- prop.table(alimentacao)
+freq_relativa_alimentacao
+
+# Análise da variável Limpeza
+
+limpeza <- table(dados$Limpeza)
+limpeza
+
+freq_relativa_limpeza <- prop.table(limpeza)
+freq_relativa_limpeza
+
+# Análise da variável Distância
+
+n_classes <- nclass.Sturges(dados$Distancia)
+maior_distancia <- max(dados$Distancia)
+menor_distancia <- min(dados$Distancia)
+
+amplitude <- ceiling((maior_distancia - menor_distancia) / n_classes)
+amplitude
+
+classe_inf <- min(dados$Distancia)
+classe_sup <- classe_inf + (amplitude * n_classes)
+
+intervalos <- seq(classe_inf, classe_sup, by = amplitude)
+intervalos
+
+distancia <- table(cut(dados$Distancia, breaks = intervalos, right = FALSE))
+distancia # FIXME: TÁ COM ERROOO
+
+freq_relativa_distancia <- prop.table(distancia)
+freq_relativa_distancia
+
+median(dados$Distancia)
+mean(dados$Distancia)
+sd(dados$Distancia)
