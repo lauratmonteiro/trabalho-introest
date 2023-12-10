@@ -71,15 +71,15 @@ ggplot(data = data, mapping = aes(x = Limpeza, y = after_stat(prop),group = 1)) 
 # Variável Distância
 data %>% select("Distancia") %>% fdt(breaks="Sturges") %>% summary()
 
-data %>% summarise(Media = mean(Distancia),
-                    Mediana = median(Distancia),
-                    Desvio_Padrao = sd(Distancia))
+data %>% summarise(media = mean(Distancia),
+                    mediana = median(Distancia),
+                    desvio_padrao = sd(Distancia))
 
-data %>% summarise(Minimo = min(Distancia),
-                    Maximo = max(Distancia),
-                    Q_1 = quantile(Distancia,prob=0.25),
-                    Q_2 = quantile(Distancia,prob=0.50),
-                    Q_3 = quantile(Distancia,prob=0.75))
+data %>% summarise(minimo = min(Distancia),
+                    maximo = max(Distancia),
+                    Q1 = quantile(Distancia,prob=0.25),
+                    Q2 = quantile(Distancia,prob=0.50),
+                    Q3 = quantile(Distancia,prob=0.75))
 
 data %>% summarise(Assimetria = skewness(Distancia),
                     Curtose= kurtosis(Distancia)-3)
@@ -255,10 +255,10 @@ res_sd <- data %>% group_by(Satisfacao)%>%
                     cv = (desvio_padrao/media)*100)
 res_sd
 
-var = var(data$Distancia)
+var <- var(data$Distancia)
 var
-var_b = sum(res_sd$n*res_sd$var)/sum(res_sd$n)
+var_b <- sum(res_sd$n*res_sd$var)/sum(res_sd$n)
 var_b
 
-r2 = (1-var_b/var_b)*100
+r2 <- (1-var_b/var_b)*100
 r2
