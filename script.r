@@ -113,6 +113,17 @@ ggplot(data, mapping = aes(x = Genero, fill=Satisfacao)) +
 ggplot(data) + 
   geom_mosaic(aes(x=product(Genero, Satisfacao),fill=Genero)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Gênero")
 
+x2_sg = chisq.test(table(data$Genero, data$Satisfacao),correct = FALSE)$statistic
+x2_sg
+
+total <- 2500
+
+c_sg = sqrt(x2_sg/(total-1))
+c_sg
+
+v_sg = sqrt(x2_sg/((total*min(2,2)-1)))
+v_sg
+
 # Variáveis Satisfação e Tipo
 
 freq_by_cases_st <- data %>% cross_cases(Satisfacao, Tipo)
@@ -129,6 +140,15 @@ ggplot(data, mapping = aes(x = Tipo, fill=Satisfacao)) +
 
 ggplot(data) + 
   geom_mosaic(aes(x=product(Tipo, Satisfacao),fill=Tipo)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Tipo")
+
+x2_st = chisq.test(table(data$Tipo, data$Satisfacao),correct = FALSE)$statistic
+x2_st
+
+c_st = sqrt(x2_st/(total-1))
+c_st
+
+v_st = sqrt(x2_st/((total*min(2,2)-1)))
+v_st
 
 # Variáveis Satisfação e WiFi
 
@@ -147,6 +167,15 @@ ggplot(data, mapping = aes(x = WiFi, fill=Satisfacao)) +
 ggplot(data) +
   geom_mosaic(aes(x=product(WiFi, Satisfacao),fill=WiFi)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com o WiFi")
 
+x2_sw = chisq.test(table(data$WiFi, data$Satisfacao),correct = FALSE)$statistic
+x2_sw
+
+c_sw = sqrt(x2_sw/(total-1))
+c_sw
+
+v_sw = sqrt(x2_sw/((total*min(6,2)-1)))
+v_sw
+
 # Variáveis Satisfação e Comida_Bebida
 
 freq_by_cases_sc <- data %>% cross_cases(Satisfacao, Comida_Bebida)
@@ -164,6 +193,15 @@ ggplot(data, mapping = aes(x = Comida_Bebida, fill=Satisfacao)) +
 ggplot(data) +
   geom_mosaic(aes(x=product(Comida_Bebida, Satisfacao),fill=Comida_Bebida)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com a comida e bebida")
 
+x2_sc = chisq.test(table(data$Comida_Bebida, data$Satisfacao),correct = FALSE)$statistic
+x2_sc
+
+c_sc = sqrt(x2_sc/(total-1))
+c_sc
+
+v_sc = sqrt(x2_sc/((total*min(6,2)-1)))
+v_sc
+
 # Variáveis Satisfação e Limpeza
 
 freq_by_cases_sl <- data %>% cross_cases(Satisfacao, Limpeza)
@@ -180,6 +218,14 @@ ggplot(data, mapping = aes(x = Limpeza, fill=Satisfacao)) +
 ggplot(data) +
   geom_mosaic(aes(x=product(Limpeza, Satisfacao),fill=Limpeza)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com a limpeza")
 
+x2_sl = chisq.test(table(data$Limpeza, data$Satisfacao),correct = FALSE)$statistic
+x2_sl
+
+c_sl = sqrt(x2_sl/(total-1))
+c_sl
+
+v_sl = sqrt(x2_sl/((total*min(6,2)-1)))
+v_sl
 
 # Variáveis Satisfação e Distância
 
