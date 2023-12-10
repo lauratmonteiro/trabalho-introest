@@ -4,8 +4,8 @@ library("ggplot2")
 library("readr")
 library("expss")
 library("fdth")
-install.packages("moments")
 library("moments")
+library("ggmosaic")
 
 data <- read_csv("Base4.csv")
 
@@ -29,9 +29,14 @@ ggplot(data = data, mapping = aes(x = Genero, y = after_stat(prop),group = 1)) +
   scale_y_continuous(labels = scales::percent_format()) + theme_bw() +
   xlab("Gênero") + ylab("Frequência Relativa (%)")
 
-unique(data$Tipo)
+# Variável tipo
 data$Tipo <- factor(data$Tipo, levels = c("Cliente Fiel", "Cliente Nao Fiel"))
 data %>% select("Tipo") %>% fre()
+
+ggplot(data = data, mapping = aes(x = Tipo)) + geom_bar() + labs(x = "Tipo", y = "Frequência") + theme_bw()
+ggplot(data = data, mapping = aes(x = Tipo, y = after_stat(prop),group = 1)) + geom_bar() +
+  scale_y_continuous(labels = scales::percent_format()) + theme_bw() +
+  xlab("Tipo") + ylab("Frequência Relativa (%)")
 
 # Variável WiFi
 data$WiFi <- factor(data$WiFi, levels = c(0, 1, 2, 3, 4, 5),
@@ -91,7 +96,7 @@ ggplot(data = data, mapping = aes(x = Distancia, y=" ")) + geom_boxplot(fill="gr
 
 #  ANÁLISE BIVARIADA
 
-# Variável Satisfação e Gênero
+# Variáveis Satisfação e Gênero
 
 freq_by_cases_sg <- data %>% cross_cases(Satisfacao, Genero)
 freq_by_cases_sg
@@ -102,9 +107,112 @@ prop_by_row_sg
 prop_by_col_sg <- data %>% cross_cpct(Satisfacao, Genero, total_row_position = "none")
 prop_by_col_sg
 
-# TODO: Variáveis Satisfação e Tipo
+ggplot(data, mapping = aes(x = Genero, fill=Satisfacao)) + 
+  geom_bar(position = "fill") + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Gênero") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Satisfação")
+
+ggplot(data) + 
+  geom_mosaic(aes(x=product(Genero, Satisfacao),fill=Genero)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Gênero")
+
+# Variáveis Satisfação e Tipo
+
+freq_by_cases_st <- data %>% cross_cases(Satisfacao, Tipo)
+freq_by_cases_st
+
+prop_by_row_st <- data %>% cross_rpct(Satisfacao, Tipo, total_row_position = "none")
+prop_by_row_st
+
+prop_by_col_st <- data %>% cross_cpct(Satisfacao, Tipo, total_row_position = "none")
+prop_by_col_st
+
+ggplot(data, mapping = aes(x = Tipo, fill=Satisfacao)) + 
+  geom_bar(position = "fill") + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Tipo") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Satisfação")
+
+ggplot(data) + 
+  geom_mosaic(aes(x=product(Tipo, Satisfacao),fill=Tipo)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Tipo")
 
 # Variáveis Satisfação e WiFi
 
 freq_by_cases_sw <- data %>% cross_cases(Satisfacao, WiFi)
 freq_by_cases_sw
+
+prop_by_row_sw <- data %>% cross_rpct(Satisfacao, WiFi, total_row_position = "none")
+prop_by_row_sw
+
+prop_by_col_sw <- data %>% cross_cpct(Satisfacao, WiFi, total_row_position = "none")
+prop_by_col_sw
+
+ggplot(data, mapping = aes(x = WiFi, fill=Satisfacao)) + 
+  geom_bar(position = "fill") + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Nível de satisfação com o WiFi") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Satisfação")
+
+ggplot(data) +
+  geom_mosaic(aes(x=product(WiFi, Satisfacao),fill=WiFi)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com o WiFi")
+
+# Variáveis Satisfação e Comida_Bebida
+
+freq_by_cases_sc <- data %>% cross_cases(Satisfacao, Comida_Bebida)
+freq_by_cases_sc
+
+prop_by_row_sc <- data %>% cross_rpct(Satisfacao, Comida_Bebida, total_row_position = "none")
+prop_by_row_sc
+
+prop_by_col_sc <- data %>% cross_cpct(Satisfacao, Comida_Bebida, total_row_position = "none")
+prop_by_col_sc
+
+ggplot(data, mapping = aes(x = Comida_Bebida, fill=Satisfacao)) + 
+  geom_bar(position = "fill") + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Nível de satisfação com a comida e bebida") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Satisfação")
+
+ggplot(data) +
+  geom_mosaic(aes(x=product(Comida_Bebida, Satisfacao),fill=Comida_Bebida)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com a comida e bebida")
+
+# Variáveis Satisfação e Limpeza
+
+freq_by_cases_sl <- data %>% cross_cases(Satisfacao, Limpeza)
+freq_by_cases_sl
+
+prop_by_row_sl <- data %>% cross_rpct(Satisfacao, Limpeza, total_row_position = "none")
+prop_by_row_sl
+
+prop_by_col_sl <- data %>% cross_cpct(Satisfacao, Limpeza, total_row_position = "none")
+prop_by_col_sl
+
+ggplot(data, mapping = aes(x = Limpeza, fill=Satisfacao)) + 
+  geom_bar(position = "fill") + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Nível de satisfação com a limpeza") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Satisfação")
+ggplot(data) +
+  geom_mosaic(aes(x=product(Limpeza, Satisfacao),fill=Limpeza)) + theme_bw() + scale_y_continuous(labels = scales::percent_format()) + xlab("Satisfação") + ylab("Frequência Relativa (%)")+scale_fill_discrete(name = "Nível de satisfação com a limpeza")
+
+
+# Variáveis Satisfação e Distância
+
+data %>% 
+  select(Satisfacao, Distancia) %>%
+  fdt(breaks="Sturges",by="Satisfacao") %>%
+  summary()
+
+ggplot(data, mapping = aes(x = Satisfacao, y = Distancia, fill=Satisfacao)) +
+  geom_boxplot() + 
+  theme_bw()+
+  xlab("Satisfação")+
+  ylab("Nível de satisfação por distância")+
+  theme(legend.position="none")
+
+res_sd <- data %>% group_by(Satisfacao)%>%
+           summarise(n=n(),
+                    min = min(Distancia),
+                    media = mean(Distancia),
+                    Q1 = quantile(Distancia, 0.25),
+                    mediana = median(Distancia),
+                    Q3 = quantile(Distancia, 0.75),
+                    max = max(Distancia),
+                    desvio_padrao = sd(Distancia),
+                    var = var(Distancia),
+                    assimetria = skewness(Distancia),
+                    cv = (desvio_padrao/media)*100)
+res_sd
+
+var = var(data$Distancia)
+var
+var_b = sum(res_sd$n*res_sd$var)/sum(res_sd$n)
+var_b
+
+r2 = (1-var_b/var_b)*100
+r2
