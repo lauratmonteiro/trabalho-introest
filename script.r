@@ -257,8 +257,10 @@ res_sd
 
 var <- var(data$Distancia)
 var
+res_sd$n
+res_sd$var
 var_b <- sum(res_sd$n*res_sd$var)/sum(res_sd$n)
 var_b
 
-r2 <- (1-var_b/var_b)*100
+r2 <- (1-var_b/var)*100
 r2
